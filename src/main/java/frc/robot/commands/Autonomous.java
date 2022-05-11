@@ -8,12 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.FeedbackPanel.PanelMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.FeedbackPanel;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -25,20 +22,15 @@ public class Autonomous extends CommandBase {
   AHRS ahrs;
   XboxController xbox;
   DriveTrain driveTrain;
-  Intake intake;
   Shooter shooter;
-  FeedbackPanel panel;
 
   Timer timer = new Timer();
 
-  public Autonomous(DriveTrain driveTrain, Intake intake, Shooter shooter, AHRS ahrs, XboxController xbox,
-      FeedbackPanel panel) {
+  public Autonomous(DriveTrain driveTrain, Shooter shooter, AHRS ahrs, XboxController xbox) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrain;
-    this.intake = intake;
     this.shooter = shooter;
     this.ahrs = ahrs;
-    this.panel = panel;
     timer.start();
   }
 
@@ -48,18 +40,17 @@ public class Autonomous extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.manualModeOp = true;
-    panel.setDisplayMode(PanelMode.Boot);
     // Robot travels ~1 m/sec forward and backward
     // Robot travels ~1 m/sec forward and backward
     // Competition settings: 1.5m backward, 1m right (1.5 sec backward, 2 sec right)
     SequentialCommandGroup autoVroomVroom = new SequentialCommandGroup(
         // Runs upper chamber and shooter for 2 seconds - shoots starting ball
-        new InstantCommand(() -> intake.setIntakeMotorSpeed(0, -Constants.intakeSpeed)),
-        new InstantCommand(() -> intake.setIntakeMotorSpeed(1, -Constants.intakeSpeed)),
+      //  new InstantCommand(() -> intake.setIntakeMotorSpeed(0, -Constants.intakeSpeed)),
+      //  new InstantCommand(() -> intake.setIntakeMotorSpeed(1, -Constants.intakeSpeed)),
         new InstantCommand(() -> shooter.setShooterSpeed(0.5)),
         new WaitCommand(4.5),
-        new InstantCommand(() -> intake.setIntakeMotorSpeed(0, 0)),
-        new InstantCommand(() -> intake.setIntakeMotorSpeed(1, 0)),
+      //  new InstantCommand(() -> intake.setIntakeMotorSpeed(0, 0)),
+      //  new InstantCommand(() -> intake.setIntakeMotorSpeed(1, 0)),
         new InstantCommand(() -> shooter.setShooterSpeed(0)),
         // Drives backward for 1.5 seconds (~1.5 meters)
         new InstantCommand(() -> driveTrain.driveRobotOriented(-0.2, 0.0, 0.0)),
@@ -124,7 +115,6 @@ public class Autonomous extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    panel.setDisplayMode(PanelMode.Status);
     RobotContainer.manualModeOp = false;
   }
 

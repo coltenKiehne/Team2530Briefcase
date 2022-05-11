@@ -9,20 +9,24 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class USBCamera extends CommandBase {
-  static HttpCamera driveCam, leftIntakeCam, rightIntakeCam;
+  CameraServer driveCam;
+  static HttpCamera leftIntakeCam, rightIntakeCam;
   static MjpegServer dashboardCam = CameraServer.addSwitchedCamera("Dashcam");
 
   /** Creates a new USBCamera. */
   public USBCamera() {
     // Use addRequirements() here to declare subsystem dependencies.
-    driveCam = new HttpCamera("driveCam", "http://10.25.30.2:1182/stream.mjpg");
+    // driveCam = new HttpCamera("driveCam", "http://10.25.30.2:1182/stream.mjpg");
+    driveCam.startAutomaticCapture();
+    driveCam.startAutomaticCapture();
     leftIntakeCam = new HttpCamera("leftIntakeCam", "http://10.25.30.55:1183/stream.mjpg");
     rightIntakeCam = new HttpCamera("rightIntakeCam", "http://10.25.30.55:1184/stream.mjpg");
-    dashboardCam.setSource(driveCam);
+    // dashboardCam.setSource(driveCam);
     Shuffleboard.getTab("Driver Dashboard")
         .add("Camera", dashboardCam.getSource())
         .withWidget(BuiltInWidgets.kCameraStream)
@@ -57,7 +61,7 @@ public class USBCamera extends CommandBase {
     } else if (mode == DriveTrain.Cockpit.RIGHT) {
       putToDashboard(rightIntakeCam);
     } else {
-      putToDashboard(driveCam);
+      // putToDashboard(driveCam);
     }
   }
 

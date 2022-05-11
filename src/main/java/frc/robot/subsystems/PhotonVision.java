@@ -33,7 +33,6 @@ public class PhotonVision extends SubsystemBase {
     private String camerastring;
     private Joystick stick;
     private DriveTrain driveTrain;
-    private Indicators indicators;
 
     @Override
     public void periodic() {
@@ -41,7 +40,7 @@ public class PhotonVision extends SubsystemBase {
         // Color.GREEN : Color.RED);
     }
 
-    public PhotonVision(Joystick stick, DriveTrain driveTrain, Indicators indicators) {
+    public PhotonVision(Joystick stick, DriveTrain driveTrain) {
         this.stick = stick;
         this.driveTrain = driveTrain;
         CameraServer.addServer("http://10.25.30.55:1183/stream.mjpg");

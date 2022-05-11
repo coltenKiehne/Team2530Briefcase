@@ -13,7 +13,6 @@ import frc.robot.subsystems.DriveTrain;
 import com.ctre.phoenix.schedulers.SequentialScheduler;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.subsystems.Intake;
 
 public class AutonomousDrive extends CommandBase {
   /** Creates a new AutonomousDrive. */
